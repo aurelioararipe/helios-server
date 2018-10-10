@@ -8,15 +8,9 @@ You have uploaded a file of voters. The first few rows of this file are:
 </p>
 
 <table>
-<<<<<<< HEAD
-<tr><th>Voter Login</th><th>Email Address</th><th>Name</th></tr>
-{% for v in voters %}
-<tr><td>{{v.voter_id}}</td><td>{{v.email}}</td><td>{{v.name}}</td></tr>
-=======
 <tr><th>Voter Login</th><th>Email Address</th><th>Name</th><th>Identidade Peso</th></tr>
 {% for v in voters %}
 <tr><td>{{v.voter_id}}</td><td>{{v.email}}</td><td>{{v.name}}</td><td>{{v.voter_peso}}</td></tr>
->>>>>>> Classe eleitor contem o peso do voto do eleitor
 {% endfor %}
 </table>
 
