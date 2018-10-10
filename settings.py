@@ -216,13 +216,8 @@ AUTH_ENABLED_AUTH_SYSTEMS = get_from_env('AUTH_ENABLED_AUTH_SYSTEMS', 'google').
 AUTH_DEFAULT_AUTH_SYSTEM = get_from_env('AUTH_DEFAULT_AUTH_SYSTEM', None)
 
 # google
-<<<<<<< HEAD
-GOOGLE_CLIENT_ID = get_from_env('GOOGLE_CLIENT_ID', '')
-GOOGLE_CLIENT_SECRET = get_from_env('GOOGLE_CLIENT_SECRET', '')
-=======
 GOOGLE_CLIENT_ID = get_from_env('GOOGLE_CLIENT_ID', '26318477299-afnl8f3j32jaa39j3u2r2ivdauh0eo7e.apps.googleusercontent.com')
 GOOGLE_CLIENT_SECRET = get_from_env('GOOGLE_CLIENT_SECRET', 'OI_0GGHUlzbltPhnY5lH3FGj')
->>>>>>> Classe eleitor contem o peso do voto do eleitor
 
 # facebook
 FACEBOOK_APP_ID = get_from_env('FACEBOOK_APP_ID','')
