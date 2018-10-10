@@ -740,6 +740,14 @@ class VoterFile(models.Model):
       else:
         return_dict['name'] = return_dict['email']
 
+<<<<<<< HEAD
+=======
+      if len(voter_fields) > 3:
+        return_dict['voter_peso'] = voter_fields[3].strip()
+      else:
+        return_dict['voter_peso'] = return_dict['email']
+
+>>>>>>> Classe eleitor contem o peso do voto do eleitor
       yield return_dict
     
   def process(self):
@@ -761,8 +769,14 @@ class VoterFile(models.Model):
       if not existing_voter:
         voter_uuid = str(uuid.uuid4())
         existing_voter = Voter(uuid= voter_uuid, user = None, voter_login_id = voter['voter_id'],
+<<<<<<< HEAD
                       voter_name = voter['name'], voter_email = voter['email'], election = election)
         existing_voter.generate_password()
+=======
+                      voter_name = voter['name'], voter_email = voter['email'], election = election, voter_peso = voter['voter_peso'])
+        existing_voter.generate_password()
+        #Voter.setVoter_peso(voter['peso'])
+>>>>>>> Classe eleitor contem o peso do voto do eleitor
         new_voters.append(existing_voter)
         existing_voter.save()
 
@@ -801,6 +815,11 @@ class Voter(HeliosModel):
   voter_password = models.CharField(max_length = 100, null=True)
   voter_name = models.CharField(max_length = 200, null=True)
   voter_email = models.CharField(max_length = 250, null=True)
+<<<<<<< HEAD
+=======
+
+  voter_peso = models.CharField(max_length = 4, null=True)
+>>>>>>> Classe eleitor contem o peso do voto do eleitor
   
   # if election uses aliases
   alias = models.CharField(max_length = 100, null=True)
@@ -815,11 +834,30 @@ class Voter(HeliosModel):
     unique_together = (('election', 'voter_login_id'))
 
   def __init__(self, *args, **kwargs):
+<<<<<<< HEAD
     super(Voter, self).__init__(*args, **kwargs)
 
   def get_user(self):
     # stub the user so code is not full of IF statements
     return self.user or User(user_type='password', user_id=self.voter_email, name=self.voter_name)
+=======
+    # self.voter_peso = kwargs.pop('voter_peso')
+    super(Voter, self).__init__(*args, **kwargs)
+
+  def deconstruct(self):
+    kwargs = super(Voter, self).deconstruct()
+    # Only include kwarg if it's not the default
+    if self.voter_peso:
+      kwargs['voter_peso'] = self.voter_peso
+    return args, kwargs
+
+
+
+
+  def get_user(self):
+    # stub the user so code is not full of IF statements
+    return self.user or User(user_type='password', user_id=self.voter_email, name=self.voter_name, peso=self.voter_peso)
+>>>>>>> Classe eleitor contem o peso do voto do eleitor
 
   @classmethod
   @transaction.atomic
@@ -927,6 +965,17 @@ class Voter(HeliosModel):
     return self.get_user().user_id
 
   @property
+<<<<<<< HEAD
+=======
+  def peso(self):
+    return self.get_user().peso
+
+  @property
+  def setVoter_peso(self, idPeso):
+      self.voter_peso = idPeso
+
+  @property
+>>>>>>> Classe eleitor contem o peso do voto do eleitor
   def voter_id_hash(self):
     if self.voter_login_id:
       # for backwards compatibility with v3.0, and since it doesn't matter
@@ -947,6 +996,11 @@ class Voter(HeliosModel):
   def voter_type(self):
     return self.get_user().user_type
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> Classe eleitor contem o peso do voto do eleitor
   @property
   def display_html_big(self):
     return self.get_user().display_html_big

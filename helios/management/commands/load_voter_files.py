@@ -44,15 +44,28 @@ def process_csv_file(election, f):
       voter_id = voter[0]
       name = voter_id
       email = voter_id
+<<<<<<< HEAD
+=======
+      peso = voter_id
+>>>>>>> Classe eleitor contem o peso do voto do eleitor
     
       if len(voter) > 1:
         email = voter[1]
     
       if len(voter) > 2:
         name = voter[2]
+<<<<<<< HEAD
     
       # create the user
       user = User.update_or_create(user_type='password', user_id=voter_id, info = {'password': helios_utils.random_string(10), 'email': email, 'name': name})
+=======
+
+      if len(voter) > 3:
+        peso = voter[3]
+    
+      # create the user
+      user = User.update_or_create(user_type='password', user_id=voter_id, info = {'password': helios_utils.random_string(10), 'email': email, 'name': name, 'peso': peso})
+>>>>>>> Classe eleitor contem o peso do voto do eleitor
       user.save()
     
       # does voter for this user already exist
@@ -61,7 +74,12 @@ def process_csv_file(election, f):
       # create the voter
       if not voter:
         voter_uuid = str(uuid.uuid1())
+<<<<<<< HEAD
         voter = Voter(uuid= voter_uuid, voter_type = 'password', voter_id = voter_id, name = name, election = election)
+=======
+        voter = Voter(uuid= voter_uuid, voter_type = 'password', voter_id = voter_id, name = name, election = election, voter_peso = peso)
+        Voter.setVoter_peso(peso)
+>>>>>>> Classe eleitor contem o peso do voto do eleitor
         voter.save()
 
     return num_voters
