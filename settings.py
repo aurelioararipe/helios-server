@@ -248,19 +248,11 @@ CLEVER_CLIENT_ID = get_from_env('CLEVER_CLIENT_ID', "")
 CLEVER_CLIENT_SECRET = get_from_env('CLEVER_CLIENT_SECRET', "")
 
 # email server
-<<<<<<< HEAD
-EMAIL_HOST = get_from_env('EMAIL_HOST', 'localhost')
-EMAIL_PORT = int(get_from_env('EMAIL_PORT', "2525"))
-EMAIL_HOST_USER = get_from_env('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = get_from_env('EMAIL_HOST_PASSWORD', '')
-EMAIL_USE_TLS = (get_from_env('EMAIL_USE_TLS', '0') == '1')
-=======
 EMAIL_HOST = get_from_env('EMAIL_HOST', 'smtp.gmail.com') #localhost
 EMAIL_PORT = int(get_from_env('EMAIL_PORT', "587")) #2525
 EMAIL_HOST_USER = get_from_env('EMAIL_HOST_USER', 'aureliouece@gmail.com') #YXVyZWxpb3VlY2VAZ21haWwuY29t
 EMAIL_HOST_PASSWORD = get_from_env('EMAIL_HOST_PASSWORD', 'alafunk1') #YWxhZnVuazE=
 EMAIL_USE_TLS = (get_from_env('EMAIL_USE_TLS', '1') == '1')
->>>>>>> Classe eleitor contem o peso do voto do eleitor
 
 # to use AWS Simple Email Service
 # in which case environment should contain
