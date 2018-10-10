@@ -23,13 +23,9 @@ class User(models.Model):
   user_id = models.CharField(max_length=100)
     
   name = models.CharField(max_length=200, null=True)
-<<<<<<< HEAD
-  
-=======
 
   peso = models.CharField(max_length=4, null=True)
 
->>>>>>> Classe eleitor contem o peso do voto do eleitor
   # other properties
   info = JSONField()
   

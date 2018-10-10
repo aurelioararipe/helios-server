@@ -1288,11 +1288,7 @@ def voters_upload(request, election):
       # launch the background task to parse that file
       tasks.voter_file_process.delay(voter_file_id = request.session['voter_file_id'])
       del request.session['voter_file_id']
-<<<<<<< HEAD
-
-=======
       print '\nviews.py>>voters upload()\nDEUCERTO\n\n'
->>>>>>> Classe eleitor contem o peso do voto do eleitor
       return HttpResponseRedirect(settings.SECURE_URL_HOST + reverse(voters_list_pretty, args=[election.uuid]))
     else:
       # we need to confirm
