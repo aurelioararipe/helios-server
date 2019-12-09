@@ -212,6 +212,7 @@ BOOTH.launch_async_encryption_answer = function(question_num) {
    BOOTH.answer_timestamps[question_num] = new Date().getTime();
    BOOTH.encrypted_answers[question_num] = null;
    BOOTH.dirty[question_num] = false;
+   console.log("Vote.html > BOOTH.ballot.answers[question_num]"+ BOOTH.ballot.answers[question_num]);
    BOOTH.worker.postMessage({
       'type' : 'encrypt',
       'q_num': question_num,
@@ -301,9 +302,14 @@ BOOTH.show_question = function(question_num) {
 
   // we should not set the dirty bit here, so we save it away
   var old_dirty = BOOTH.dirty[question_num];
+  console.log("Answer_array1 = "+answer_array);
   $(answer_array).each(function(i, ans) {
     BOOTH.click_checkbox_script(question_num, ans, true);
+    console.log("ans = "+ans);
+    console.log("ANS e tipo: "+typeof(ans));
+    console.log("Answer_array2 = "+answer_array);
   });
+
   BOOTH.dirty[question_num] = old_dirty;
 };
 

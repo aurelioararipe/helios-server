@@ -131,6 +131,9 @@ class ElGamal:
       return keypair
 
     def toJSONDict(self):
+      print("str(self.p): ", str(self.p))
+      print("str(self.q): ", str(self.q))
+      print("str(self.g): ", str(self.g))
       return {'p': str(self.p), 'q': str(self.q), 'g': str(self.g)}
 
     @classmethod

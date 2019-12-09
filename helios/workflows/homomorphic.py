@@ -25,6 +25,9 @@ class EncryptedAnswer(WorkflowObject):
     self.randomness = randomness
     self.answer = answer
     
+  def __str__(self):
+    return "self.choices= {} e answer= {}".format(str(self.choices), self.answer)
+
   @classmethod
   def generate_plaintexts(cls, pk, min=0, max=1):
     plaintexts = []
@@ -51,6 +54,7 @@ class EncryptedAnswer(WorkflowObject):
     
     for choice_num in range(len(self.choices)):
       choice = self.choices[choice_num]
+      print(self)
       choice.pk = pk
       
       # redo the encryption
@@ -64,6 +68,7 @@ class EncryptedAnswer(WorkflowObject):
       
     for choice_num in range(len(self.choices)):
       choice = self.choices[choice_num]
+      print(self)
       choice.pk = pk
       individual_proof = self.individual_proofs[choice_num]
       
@@ -154,7 +159,8 @@ class EncryptedAnswer(WorkflowObject):
     else:
       # approval voting
       overall_proof = None
-    
+
+    print(self)
     return cls(choices, individual_proofs, overall_proof, randomness, answer_indexes)
     
 # WORK HERE
@@ -213,6 +219,8 @@ class EncryptedVote(WorkflowObject):
 
     # each answer is an index into the answer array
     encrypted_answers = [EncryptedAnswer.fromElectionAndAnswer(election, answer_num, answers[answer_num]) for answer_num in range(len(answers))]
+    print("answer 01: ")
+    print(answers[1])
     return_val = cls()
     return_val.encrypted_answers = encrypted_answers
     return_val.election_hash = election.hash
@@ -240,7 +248,7 @@ class DLogTable(object):
     
     # new value
     new_value = (self.last_dlog_result * self.base) % self.modulus
-    
+
     # record the discrete log
     self.dlogs[new_value] = self.counter
     
@@ -248,10 +256,14 @@ class DLogTable(object):
     self.last_dlog_result = new_value
     
   def precompute(self, up_to):
+    print("self.counter = ",self.counter)
+    print("up_to = ", up_to)
     while self.counter < up_to:
       self.increment()
   
   def lookup(self, value):
+    print("value: ")
+    print(value)
     return self.dlogs.get(value, None)
       
     
@@ -274,10 +286,14 @@ class Tally(WorkflowObject):
     if election:
       self.init_election(election)
       self.tally = [[0 for a in q['answers']] for q in self.questions]
+
     else:
       self.questions = None
       self.public_key = None
       self.tally = None
+
+  def __str__(self):
+    return "self.tally = {} e self.num_tallied = {}".format(str(self.tally), self.num_tallied)
 
   def init_election(self, election):
     """
@@ -293,6 +309,8 @@ class Tally(WorkflowObject):
     rather than a whole proof verif for each vote.
     """
     for vote in encrypted_votes:
+      print("encrypted_vote: ")
+      print(vote)
       self.add_vote(vote, verify_p)
     
   def add_vote(self, encrypted_vote, verify_p=True):
@@ -305,13 +323,20 @@ class Tally(WorkflowObject):
     for question_num in range(len(self.questions)):
       question = self.questions[question_num]
       answers = question['answers']
+      print("answers: ")
+      print(question['answers'])
+      for x in question['answers']:
+        print("question[answer]: ", x)
       
       # for each possible answer to each question
       for answer_num in range(len(answers)):
         # do the homomorphic addition into the tally
         enc_vote_choice = encrypted_vote.encrypted_answers[question_num].choices[answer_num]
         enc_vote_choice.pk = self.public_key
+
+        print("ANTES self.tally[", question_num,"] [",answer_num,"]: ", self.tally[question_num][answer_num])
         self.tally[question_num][answer_num] = encrypted_vote.encrypted_answers[question_num].choices[answer_num] * self.tally[question_num][answer_num]
+        print("DEPOIS self.tally[", question_num,"] [",answer_num,"]: ", self.tally[question_num][answer_num])
 
     self.num_tallied += 1
 
@@ -385,10 +410,14 @@ class Tally(WorkflowObject):
     # go through each one
     for q_num, q in enumerate(self.tally):
       for a_num, answer_tally in enumerate(q):
+        print("q= ", q)
+
+        print("answer_tally= {}".format(answer_tally))
+        print("a_num= {}").format(a_num)
         # parse the proof
         #proof = algs.EGZKProof.fromJSONDict(decryption_proofs[q_num][a_num])
         proof = decryption_proofs[q_num][a_num]
-        
+        print("proof= {}").format(proof)
         # check that g, alpha, y, dec_factor is a DH tuple
         if not proof.verify(public_key.g, answer_tally.alpha, public_key.y, int(decryption_factors[q_num][a_num]), public_key.p, public_key.q, challenge_generator):
           return False
@@ -415,20 +444,38 @@ class Tally(WorkflowObject):
 
       for a_num, a in enumerate(q):
         # coalesce the decryption factors into one list
+        print("a_num: ", a_num, "-- a: ", a)
+        print("q: ")
+        print(q)
         dec_factor_list = [df[q_num][a_num] for df in decryption_factors]
         raw_value = self.tally[q_num][a_num].decrypt(dec_factor_list, public_key)
-        
+        """print("self.tally [", q_num, "] [", a_num, "]: ")
+        print(self.tally[q_num][a_num])"""
+        print("RAW_VALUE:", raw_value)
         q_result.append(dlog_table.lookup(raw_value))
-
+        print("q_result: ")
+        print(q_result)
       result.append(q_result)
     
     return result
 
   def _process_value_in(self, field_name, field_value):
     if field_name == 'tally':
+      print("arquivo homomorphic.py")
+      print("IN field_value: ", field_value)
+      for x in field_value:
+        print("x: ", x)
+        for y in x:
+          print("y: ", y)
       return [[algs.EGCiphertext.fromJSONDict(a) for a in q] for q in field_value]
       
   def _process_value_out(self, field_name, field_value):
     if field_name == 'tally':
+      print("arquivo homomorphic.py")
+      print("OUT field_value: ", field_value)
+      for x in field_value:
+        print("x: ", x)
+        for y in x:
+          print("y: ", y)
       return [[a.toJSONDict() for a in q] for q in field_value]    
         

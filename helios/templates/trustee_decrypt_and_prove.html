@@ -44,7 +44,9 @@ function decrypt_and_prove_tally(tally, public_key, secret_key) {
 
         $(q_tally).each(function(choice_num, choice_tally) {
            var one_choice_result = secret_key.decryptionFactorAndProof(choice_tally, ElGamal.fiatshamir_challenge_generator);
-           
+           console.log("one_choice_result: "+one_choice_result);
+           console.log("one_choice_result.decryption_factor: "+one_choice_result.decryption_factor);
+           console.log("one_choice_result.decryption_proof: "+one_choice_result.decryption_proof);
            decryption_factors[q_num][choice_num] = one_choice_result.decryption_factor
            decryption_proofs[q_num][choice_num] = one_choice_result.decryption_proof;
         });
@@ -68,7 +70,9 @@ function do_tally() {
   // json'ify it
   var factors = factors_and_proof.decryption_factors
   var decryption_proofs = $(factors_and_proof.decryption_proofs).map(function(i, q_proof) {
+      console.log("q_proof: "+q_proof);
       return $(q_proof).map(function(j, a_proof){
+          console.log("a_proof: "+a_proof);
          return a_proof.toJSONObject(); 
       });
   });

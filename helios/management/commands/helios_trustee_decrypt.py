@@ -32,6 +32,8 @@ class Command(BaseCommand):
 
             factors, proof = tally.decryption_factors_and_proofs(t.secret_key)
             t.decryption_factors = factors
+            print("t.decryption_factors: ", t.decryption_factors)
             t.decryption_proofs = proof
+            print("t.decryption_proofs: ", t.decryption_proofs)
             t.save()
             

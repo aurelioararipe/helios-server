@@ -29,6 +29,32 @@ class ElectionForm(forms.Form):
   voting_ends_at = SplitDateTimeField(help_text = 'UTC date and time when voting ends',
                                    widget=SplitSelectDateTimeWidget, required=False)
 
+class ScriptForm(forms.Form):
+  categorias_eleitores = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'size':2}), help_text='Informe a quantidade de categorias de eleitores')
+  categoria_1 = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'size':10}), help_text='Informe o nome da categoria 1')
+  categoria_2 = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'size':30}), help_text='Informe o nome da categoria 2')
+  categoria_3 = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'size':30}), help_text='Informe o nome da categoria 3')
+  peso_1 = forms.CharField(max_length=3, widget=forms.TextInput(attrs={'size':30}), help_text='Informe o peso da categoria 1')
+  peso_2 = forms.CharField(max_length=3, widget=forms.TextInput(attrs={'size':30}), help_text='Informe o peso da categoria 2')
+  peso_3 = forms.CharField(max_length=3, widget=forms.TextInput(attrs={'size':30}), help_text='Informe o peso da categoria 3')
+  Eleitores_categoria_1 = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'size':30}), help_text='Informe a quantidade de eleitores aptos a votar')
+  Eleitores_categoria_2 = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'size':30}), help_text='Informe a quantidade de eleitores aptos a votar')
+  Eleitores_categoria_3 = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'size':30}), help_text='Informe a quantidade de eleitores aptos a votar')
+  Quantidade_candidatos = forms.CharField(max_length=2, widget=forms.TextInput(attrs={'size':30}), help_text='Informe a quantidade de candidatos')
+  candidato_1 = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'size':30}), help_text='Informe o nome do candidato 1')
+  candidato_2 = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'size':30}), help_text='Informe o nome do candidato 2')
+  candidato_3 = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'size':30}), help_text='Informe o nome do candidato 3')
+  Votos_Candidato_1_Categoria_1 = forms.CharField(max_length=8, widget=forms.TextInput(attrs={'size':30}), help_text='Informe a quantidade de votos que o candidato 1 recebeu da categoria 1')
+  Votos_Candidato_2_Categoria_1 = forms.CharField(max_length=8, widget=forms.TextInput(attrs={'size':30}), help_text='Informe a quantidade de votos que o candidato 2 recebeu da categoria 1')
+  Votos_Candidato_3_Categoria_1 = forms.CharField(max_length=8, widget=forms.TextInput(attrs={'size':30}), help_text='Informe a quantidade de votos que o candidato 3 recebeu da categoria 1')
+  Votos_Candidato_1_Categoria_2 = forms.CharField(max_length=8, widget=forms.TextInput(attrs={'size':30}), help_text='Informe a quantidade de votos que o candidato 1 recebeu da categoria 2')
+  Votos_Candidato_2_Categoria_2 = forms.CharField(max_length=8, widget=forms.TextInput(attrs={'size':30}), help_text='Informe a quantidade de votos que o candidato 2 recebeu da categoria 2')
+  Votos_Candidato_3_Categoria_2 = forms.CharField(max_length=8, widget=forms.TextInput(attrs={'size':30}), help_text='Informe a quantidade de votos que o candidato 3 recebeu da categoria 2')
+  Votos_Candidato_1_Categoria_3 = forms.CharField(max_length=8, widget=forms.TextInput(attrs={'size':30}), help_text='Informe a quantidade de votos que o candidato 1 recebeu da categoria 3')
+  Votos_Candidato_2_Categoria_3 = forms.CharField(max_length=8, widget=forms.TextInput(attrs={'size':30}), help_text='Informe a quantidade de votos que o candidato 2 recebeu da categoria 3')
+  Votos_Candidato_3_Categoria_3 = forms.CharField(max_length=8, widget=forms.TextInput(attrs={'size':30}), help_text='Informe a quantidade de votos que o candidato 3 recebeu da categoria 3')
+  Resultado = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'size':30}), help_text='Clique em Calcular para saber o resultado')
+
 class ElectionTimeExtensionForm(forms.Form):
   voting_extended_until = SplitDateTimeField(help_text = 'UTC date and time voting extended to',
                                    widget=SplitSelectDateTimeWidget, required=False)

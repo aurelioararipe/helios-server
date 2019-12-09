@@ -216,6 +216,17 @@ def election_new(request):
     
   return render_template(request, "election_new", {'election_form': election_form, 'error': error})
   
+
+def script(request):
+  error = None
+  if request.method == "GET":
+    script_form = forms.ScriptForm()
+  else:
+    check_csrf(request)
+    script_form = forms.ScriptForm(request.POST)
+  return render_template(request, "script", {'script_form': script_form, 'error': error})
+
+
 @election_admin(frozen=False)
 def one_election_edit(request, election):
 

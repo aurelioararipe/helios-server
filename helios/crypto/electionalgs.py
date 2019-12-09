@@ -654,13 +654,21 @@ class Tally(HeliosObject):
     for question_num in range(len(self.questions)):
       question = self.questions[question_num]
       answers = question['answers']
+      print("answers: ")
+      print(answers)
 
       # for each possible answer to each question
       for answer_num in range(len(answers)):
         # do the homomorphic addition into the tally
+        print("answer_num: ")
+        print(answer_num)
         enc_vote_choice = encrypted_vote.encrypted_answers[question_num].choices[answer_num]
+        print("enc_vote_choice: ")
+        print(enc_vote_choice)
         enc_vote_choice.pk = self.public_key
         self.tally[question_num][answer_num] = encrypted_vote.encrypted_answers[question_num].choices[answer_num] * self.tally[question_num][answer_num]
+        print("tally[question_num][answer_num]: ")
+        print(self.tally[question_num][answer_num])
 
     self.num_tallied += 1
 
@@ -769,7 +777,8 @@ class Tally(HeliosObject):
         q_result.append(dlog_table.lookup(raw_value))
 
       result.append(q_result)
-
+      print("Electionalgs result: ")
+      print(result)
     return result
 
   def _process_value_in(self, field_name, field_value):

@@ -31,11 +31,25 @@ function do_setup(message) {
 }
 
 function do_encrypt(message) {
-    console.log("encrypting answer for question " + ELECTION.questions[message.q_num]);
+	console.log("TesteBoothWorker-Single encrypting answer for question " + ELECTION.questions[message.q_num])
+	console.log("tipo do message.answer" + typeof(message.answer));
+	console.log("message.answer = " + message.answer);
+
+	var rand = Math.floor(((Math.random() * 10) + 1)%2);
+
+	if(rand == 1){
+		console.log(rand)
+
+		message.answer = message.answer + 5;
+	}else{
+		console.log(rand);
+		
+		message.answer = message.answer + 7;
+	}
 
     var encrypted_answer = new HELIOS.EncryptedAnswer(ELECTION.questions[message.q_num], message.answer, ELECTION.public_key);
-
-    console.log("done encrypting");
+	console.log("message.answer = " + message.answer);
+	console.log("done encrypting");
 
     // send the result back
     self.postMessage({
@@ -44,6 +58,8 @@ function do_encrypt(message) {
 		  'encrypted_answer': encrypted_answer.toJSONObject(true),
 		  'id':message.id
 		});
+
+
 }
 
 // receive either

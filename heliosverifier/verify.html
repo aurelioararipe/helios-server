@@ -138,8 +138,13 @@ function load_election_and_ballots(election_url) {
                     vote.verifyProofs(election.public_key, function(answer_num, choice_num, result, choice) {
                         overall_result = overall_result && result;
                         if (choice_num != null) {
+                            console.log("verify-answer_num: "+answer_num);
+                            console.log("verify-choice_num: "+choice_num);
+                            console.log("verify-result: "+result);
+                            console.log("verify-choice: "+choice);
                             // keep track of tally
                             tally[answer_num][choice_num] = choice.multiply(tally[answer_num][choice_num]);
+                            console.log("verify-tally[answer_num][choice_num]: "+tally[answer_num][choice_num]);
 
                             result_append("Question #" + (answer_num+1) + ", Option #" + (choice_num+1) + " -- " + pretty_result(result));                            
                         } else {
@@ -196,7 +201,7 @@ function load_election_and_ballots(election_url) {
                            result_append("Question #" + (q_num+1) + ": " + election.questions[q_num].short_name);
                            $(q).each(function(a_num, a) {
                                var plaintext = new ElGamal.Plaintext(election.public_key.g.modPow(BigInt.fromInt(results[q_num][a_num]), election.public_key.p), election.public_key);
-
+                                console.log("verify-plaintext: "+plaintext);
                                var check = true;
                                result_append("Answer #" + (a_num + 1) + ": " + election.questions[q_num].answers[a_num] + " - COUNT = " + results[q_num][a_num]);
 

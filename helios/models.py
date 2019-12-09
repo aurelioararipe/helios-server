@@ -134,7 +134,10 @@ class Election(HeliosModel):
   # results of the election
   result = LDObjectField(type_hint = 'legacy/Result',
                          null=True)
-
+  """
+  result_peso = LDObjectField(type_hint = 'legacy/Result', null=True)
+  """
+  
   # decryption proof, a JSON object
   # no longer needed since it's all trustees
   result_proof = JSONField(null=True)
@@ -144,6 +147,10 @@ class Election(HeliosModel):
 
   # downloadable election info
   election_info_url = models.CharField(max_length=300, null=True)
+
+  """def __str__(self, voter):
+    return "result= {} e voter.vote= {}".format(self.result, voter.vote)
+  """
 
   # metadata for the election
   @property
@@ -386,9 +393,13 @@ class Election(HeliosModel):
   def compute_tally(self):
     """
     tally the election, assuming votes already verified
+    eleitor = Voter.objects.get_by_election(self)
     """
+
     tally = self.init_tally()
     for voter in self.voter_set.exclude(vote=None):
+      print(self, voter)
+      print("VOTO: {}".format(voter.vote))
       tally.add_vote(voter.vote, verify_p=False)
 
     self.encrypted_tally = tally
@@ -424,12 +435,20 @@ class Election(HeliosModel):
     # gather the decryption factors
     trustees = Trustee.get_by_election(self)
     decryption_factors = [t.decryption_factors for t in trustees]
-    
-    self.result = self.encrypted_tally.decrypt_from_factors(decryption_factors, self.public_key)
+    print("decryption_factors: ", decryption_factors)
 
+    self.result = self.encrypted_tally.decrypt_from_factors(decryption_factors, self.public_key)
+    print("models.py-result: ")
+    print(self.result)
     self.append_log(ElectionLog.DECRYPTIONS_COMBINED)
 
     self.save()
+
+  def resultado_peso(self):
+    """
+    calcula o resultado da eleição considerando o peso dos eleitores
+    """
+
   
   def generate_voters_hash(self):
     """
@@ -580,6 +599,7 @@ class Election(HeliosModel):
   def init_tally(self):
     # FIXME: create the right kind of tally
     from helios.workflows import homomorphic
+    print("AQUI MODELS.PY CLASS TALLY DEF INIT_TALLY")
     return homomorphic.Tally(election=self)
         
   @property
@@ -596,8 +616,10 @@ class Election(HeliosModel):
     """
     # sort the answers , keep track of the index
     counts = sorted(enumerate(result), key=lambda(x): x[1])
+    print("ANTES REVERSE counts= {}".format(counts))
     counts.reverse()
-    
+    print("APOS REVERSE counts= {}".format(counts))
+
     the_max = question['max'] or 1
     the_min = question['min'] or 0
 
@@ -608,6 +630,12 @@ class Election(HeliosModel):
     # if max = 1, then depends on absolute or relative
     if question['result_type'] == 'absolute':
       if counts[0][1] >=  (num_cast_votes/2 + 1):
+        print("models.py-num_cast_votes: ")
+        print(num_cast_votes)
+        print("models.py-counts01: ")
+        print(counts[0][1])
+        print("models.py-counts00: ")
+        print(counts[0][0])
         return [counts[0][0]]
       else:
         return []
@@ -622,6 +650,8 @@ class Election(HeliosModel):
     returns an array of winners for each question, aka an array of arrays.
     assumes that if there is a max to the question, that's how many winners there are.
     """
+    """resposta = self.one_question_winner(self.questions[i], self.result[i], self.num_cast_votes) for i in range(len(self.questions))
+    print("models.py-resposta: "+resposta);"""
     return [self.one_question_winner(self.questions[i], self.result[i], self.num_cast_votes) for i in range(len(self.questions))]
     
   @property
@@ -638,12 +668,20 @@ class Election(HeliosModel):
     # loop through questions
     for i in range(len(self.questions)):
       q = self.questions[i]
+      """print("q: ")
+      print(q)"""
       pretty_question = []
       
       # go through answers
       for j in range(len(q['answers'])):
         a = q['answers'][j]
+        print("a: ")
+        print(a)
         count = raw_result[i][j]
+        print("raw_result: ")
+        print(raw_result)
+        print("count: ")
+        print(count)
         pretty_question.append({'answer': a, 'count': count, 'winner': (j in winners[i])})
         
       prettified_result.append({'question': q['short_name'], 'answers': pretty_question})
@@ -998,6 +1036,7 @@ class Voter(HeliosModel):
       return
 
     self.vote = cast_vote.vote
+    print("cast_vote.vote: ", cast_vote.vote)
     self.vote_hash = cast_vote.vote_hash
     self.cast_at = cast_vote.cast_at
     self.save()

@@ -1,0 +1,159 @@
+{% extends TEMPLATE_BASE %}
+
+{% block content %}
+
+  <h2 class="title">Script para calcular eleicoes ponderadas</h2>
+  
+{% if error %}
+<p style="color: red;">
+    {{error}}
+</p>
+{% endif %}
+
+<form onsubmit="event.preventDefault();" autocomplete="off"" id="formulario">
+
+    <label class="lab">Quantidade de Categorias</label>
+    <input type="text" placeholder="Categoria de Eleitores" id="categoria"> <br>
+    
+    <label class="lab">Categoria 1</label>
+    <input type="text" placeholder="Nome da Categoria 1" id="nomeCateg1"> <br>
+
+    <label class="lab">Peso 1</label>
+    <input type="text" placeholder="Peso da Categoria 1" id="peso1"> <br>
+    
+    <label class="lab">Categoria 2</label>
+    <input type="text" placeholder="Nome da Categoria 2" id="nomeCateg2"> <br>
+
+    <label class="lab">Peso 2</label>
+    <input type="text" placeholder="Peso da categoria 2" id="peso2"> <br>
+
+    <label class="lab">Categoria 3</label>
+    <input type="text" placeholder="Nome da Categoria 3" id="nomeCateg3"> <br>
+
+    <label class="lab">Peso 3</label>
+    <input type="text" placeholder="Peso da categoria 3" id="peso3"> <br>
+
+    
+    <label class="lab">Quantidade de Candidatos</label>
+    <input type="text" placeholder="Quantidade de Candidatos" id="qtdCandidatos"> <br>
+    
+    <label class="lab">Nome Candidato 1</label>
+    <input type="text" placeholder="Nome Candidato 1" id="nomeCandidato1"> <br>
+    
+    <label class="lab">Nome Candidato 2</label>
+    <input type="text" placeholder="Nome Candidato 2" id="nomeCandidato2"> <br>
+    
+    <label class="lab">Nome Candidato 3</label>
+    <input type="text" placeholder="Nome Candidato 3" id="nomeCandidato3"> <br>
+    
+    <label class="lab">Eleitor Categoria 1 Aptos a Votar</label>
+    <input type="text" placeholder="Quantidade de Eleitores da Categoria 1 Aptos a Votar" id="categoria1aptosvotar"> <br>
+
+    <label class="lab">Eleitor Categoria 2 Aptos a Votar</label>
+    <input type="text" placeholder="Quantidade de Eleitores da Categoria 2 Aptos a Votar" id="categoria2aptosvotar"> <br>
+
+    <label class="lab">Eleitor Categoria 3 Aptos a Votar</label>
+    <input type="text" placeholder="Quantidade de Eleitores da Categoria 3 Aptos a Votar" id="categoria3aptosvotar"> <br>
+
+    <label class="lab">Candidato 1 Votos Recebidos Eleitor Categoria 1</label>
+    <input type="text" placeholder="Quantidade de votos que o candidato 1 recebeu dos eleitores de Categoria 1" id="cand1eleitor1"> <br>
+
+    <label class="lab">Candidato 1 Votos Recebidos Eleitor Categoria 2</label>
+    <input type="text" placeholder="Quantidade de votos que o candidato 1 recebeu dos eleitores de Categoria 2" id="cand1eleitor2"> <br>
+
+    <label class="lab">Candidato 1 Votos Recebidos Eleitor Categoria 3</label>
+    <input type="text" placeholder="Quantidade de votos que o candidato 1 recebeu dos eleitores de Categoria 3" id="cand1eleitor3"> <br>
+
+    <label class="lab">Candidato 2 Votos Recebidos Eleitor Categoria 1</label>
+    <input type="text" placeholder="Quantidade de votos que o candidato 2 recebeu dos eleitores de Categoria 1" id="cand2eleitor1"> <br>
+
+    <label class="lab">Candidato 2 Votos Recebidos Eleitor Categoria 2</label>
+    <input type="text" placeholder="Quantidade de votos que o candidato 2 recebeu dos eleitores de Categoria 2" id="cand2eleitor2"> <br>
+
+    <label class="lab">Candidato 2 Votos Recebidos Eleitor Categoria 3</label>
+    <input type="text" placeholder="Quantidade de votos que o candidato 2 recebeu dos eleitores de Categoria 3" id="cand2eleitor3"> <br>
+
+    <label class="lab">Candidato 3 Votos Recebidos Eleitor Categoria 1</label>
+    <input type="text" placeholder="Quantidade de votos que o candidato 3 recebeu dos eleitores de Categoria 1" id="cand3eleitor1"> <br>
+
+    <label class="lab">Candidato 3 Votos Recebidos Eleitor Categoria 2</label>
+    <input type="text" placeholder="Quantidade de votos que o candidato 3 recebeu dos eleitores de Categoria 2" id="cand3eleitor2"> <br>
+
+    <label class="lab">Candidato 3 Votos Recebidos Eleitor Categoria 3</label>
+    <input type="text" placeholder="Quantidade de votos que o candidato 3 recebeu dos eleitores de Categoria 3" id="cand3eleitor3"> <br>
+
+    <button id="but" type="submit">Calcular</button> <br>
+
+    <label class="lab">Resultado Candidato 1</label>
+    <input type="text" placeholder="Resultado geral candidato 1" id="Candidato1Resultado"> <br>
+
+    <label class="lab">Resultado Candidato 2</label>
+    <input type="text" placeholder="Resultado geral candidato 2" id="Candidato2Resultado"> <br>
+
+    <label class="lab">Resultado Candidato 3</label>
+    <input type="text" placeholder="Resultado geral candidato 3" id="Candidato3Resultado"> <br>
+
+
+
+</form>
+
+<script type="text/javascript">
+  var form = document.getElementById("formulario");
+  var peso1 = document.getElementById("peso1");
+  var peso2 = document.getElementById("peso2");
+  var peso3 = document.getElementById("peso3");
+  var aptosvotar1 = document.getElementById("categoria1aptosvotar");
+  var aptosvotar2 = document.getElementById("categoria2aptosvotar");
+  var aptosvotar3 = document.getElementById("categoria3aptosvotar");
+  var cand1eleitor1 = document.getElementById("cand1eleitor1");
+  var cand1eleitor2 = document.getElementById("cand1eleitor2");
+  var cand1eleitor3 = document.getElementById("cand1eleitor3");
+  var cand2eleitor1 = document.getElementById("cand2eleitor1");
+  var cand2eleitor2 = document.getElementById("cand2eleitor2");
+  var cand2eleitor3 = document.getElementById("cand2eleitor3");
+  var cand3eleitor1 = document.getElementById("cand3eleitor1");
+  var cand3eleitor2 = document.getElementById("cand3eleitor2");
+  var cand3eleitor3 = document.getElementById("cand3eleitor3");
+  var qtdcat = document.getElementById("categoria");
+	
+
+form.addEventListener('submit', function(e){
+  //alert(categoria.value*valorcategoria.value)
+  console.log((peso1.value*cand1eleitor1.value)/categoria1aptosvotar.value + (peso2.value*cand1eleitor2.value)/categoria2aptosvotar + (peso3.value*cand1eleitor3.value)/categoria3aptosvotar);
+  document.getElementById("Candidato1Resultado").value = (peso1.value*cand1eleitor1.value)/categoria1aptosvotar.value + (peso2.value*cand1eleitor2.value)/categoria2aptosvotar.value + (peso3.value*cand1eleitor3.value)/categoria3aptosvotar.value
+  document.getElementById("Candidato2Resultado").value = (peso1.value*cand2eleitor1.value)/categoria1aptosvotar.value + (peso2.value*cand2eleitor2.value)/categoria2aptosvotar.value + (peso3.value*cand2eleitor3.value)/categoria3aptosvotar.value
+  document.getElementById("Candidato3Resultado").value = (peso1.value*cand3eleitor1.value)/categoria1aptosvotar.value + (peso2.value*cand3eleitor2.value)/categoria2aptosvotar.value + (peso3.value*cand3eleitor3.value)/categoria3aptosvotar.value
+ 
+
+  var votosCandidato1 = document.getElementById("Candidato1Resultado").value
+  var votosCandidato2 = document.getElementById("Candidato2Resultado").value
+  var votosCandidato3 = document.getElementById("Candidato3Resultado").value
+   
+  var maior = Math.max(votosCandidato1, votosCandidato3, votosCandidato2)
+  var lista = [  "Candidato1Resultado", "Candidato2Resultado", "Candidato3Resultado" ]
+  
+  for (var i = 0; i < lista.length; i++)
+  {
+	var numero = document.getElementById(lista[i]).value;
+		if (numero == maior){
+			document.getElementById(lista[i]).style.color = 'green';
+			break;
+		}
+  }
+  
+  
+  console.log(votosCandidato1);
+  console.log(votosCandidato2);
+  console.log(votosCandidato3);
+  console.log(votosCandidato1.value > votosCandidato2.value)
+  console.log(votosCandidato2.value > votosCandidato3.value)
+  console.log(votosCandidato3.value > votosCandidato1.value)
+
+
+  e.preventDefault();
+});
+
+</script> 
+
+{% endblock %}
+

@@ -54,7 +54,8 @@ def get_user_info_after_auth(request):
 
   response = json.loads(content)
 
-  name = response['displayName']
+  name = "Aurelio Araripe" #response['displayName']
+
   
   # watch out, response also contains email addresses, but not sure whether thsoe are verified or not
   # so for email address we will only look at the id_token
